@@ -52,6 +52,8 @@ type Book struct {
 	Shelves        []BookShelfRef
 	Publisher      string
 	PublishYear    *int
+	// PageCount is the primary edition's page count, for list rows.
+	PageCount      *int
 	Language       string
 	UserReadStatus string
 	// UserRating is the calling user's rating (1-10 half-star integer; 0

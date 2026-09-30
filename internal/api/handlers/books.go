@@ -830,6 +830,7 @@ func bookBody(b *models.Book) map[string]any {
 		"shelves":           b.Shelves,
 		"publisher":         b.Publisher,
 		"publish_year":      b.PublishYear,
+		"page_count":        b.PageCount,
 		"language":          b.Language,
 		"user_read_status":  b.UserReadStatus,
 		"user_rating":       b.UserRating,

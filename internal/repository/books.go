@@ -275,6 +275,12 @@ func booksSelect(userStatusArg, loanLibraryArg int, loanLibraryIsSet, scoped boo
 			WHERE be.book_id = b.id AND be.is_primary = true AND be.publish_date IS NOT NULL
 			LIMIT 1
 		) AS publish_year,
+		(
+			SELECT be.page_count
+			FROM book_editions be
+			WHERE be.book_id = b.id AND be.is_primary = true AND be.page_count IS NOT NULL
+			LIMIT 1
+		) AS page_count,
 		COALESCE((
 			SELECT NULLIF(be.language, '')
 			FROM book_editions be
@@ -1229,6 +1235,7 @@ func scanBook(s scanner) (*models.Book, error) {
 		shelvesJSON    []byte
 		publisher      pgtype.Text
 		publishYear    pgtype.Int4
+		pageCount      pgtype.Int4
 		language       pgtype.Text
 		userReadStatus string
 		userRating     int
@@ -1243,7 +1250,7 @@ func scanBook(s scanner) (*models.Book, error) {
 		&pgMediaTypeID, &mediaTypeName,
 		&pgDesc, &b.CreatedAt, &b.UpdatedAt,
 		&contribJSON, &tagsJSON, &genresJSON, &b.HasCover,
-		&seriesJSON, &shelvesJSON, &publisher, &publishYear, &language,
+		&seriesJSON, &shelvesJSON, &publisher, &publishYear, &pageCount, &language,
 		&userReadStatus, &userRating, &userProgress, &activeLoans,
 		&librariesJSON, &b.Ownership,
 	)
@@ -1268,6 +1275,10 @@ func scanBook(s scanner) (*models.Book, error) {
 	if publishYear.Valid {
 		y := int(publishYear.Int32)
 		b.PublishYear = &y
+	}
+	if pageCount.Valid {
+		n := int(pageCount.Int32)
+		b.PageCount = &n
 	}
 
 	b.Contributors = []models.BookContributor{}

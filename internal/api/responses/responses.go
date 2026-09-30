@@ -168,6 +168,7 @@ type BookResponse struct {
 	CoverURL     *string          `json:"cover_url"`
 	Publisher    string           `json:"publisher"`
 	PublishYear  *int             `json:"publish_year"`
+	PageCount    *int             `json:"page_count"`
 	Language     string           `json:"language"`
 	Series       []SeriesRef      `json:"series"`
 	Shelves      []ShelfRef       `json:"shelves"`
